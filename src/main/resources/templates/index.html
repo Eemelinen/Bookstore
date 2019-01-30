@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BookStore</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<table>
+		<tr>
+			<th>Title</th>
+			<th>Author</th>
+			<th>year</th>
+			<th>isbn</th>
+			<th>Price</th>
+		</tr>
+		
+		<tr th:each="book : ${ booklist }">
+			<td th:text="${book.title}">1</td>
+			<td th:text="${book.author}">1</td>
+			<td th:text="${book.year}">1</td>
+			<td th:text="${book.isbn}">1</td>
+			<td th:text="${book.price}">1</td>			
+		</tr>
+	</table>
+		
+</body>
+</html>
