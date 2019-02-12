@@ -1,42 +1,47 @@
 package hh.swd20.BookStore.control;
-
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import hh.swd20.BookStore.model.Book;
+import hh.swd20.BookStore.model.BookRepository;
 
 @Controller 
 public class BookController {
+	@Autowired
+	private BookRepository repository;
 
-	@GetMapping("/index")
+	@RequestMapping(value="/index")
 	public String bookstore(Model model) {
-		
-		Book book1 = new Book("Fire and Blood", "George Martin", 2019, 12345, 28);
-		Book book2 = new Book("Feast for crows", "George Martin", 2007, 12476, 26);
-		Book book3 = new Book("War of five kings", "George Martin", 1991, 12356, 25);
-
-		ArrayList<Book> books = new ArrayList<>();
-		books.add(book1);
-		books.add(book2);
-		books.add(book3);
-		
-		// model.addAttribute("books", book1);
-		
-		model.addAttribute("booklist", books);
-		
+		model.addAttribute("books", repository.findAll());
 		return "index";
 	}
+
+	@RequestMapping(value="/addBook")
+	public String addBook(Model model) {
+		model.addAttribute("book", new Book());
+		return "addBook";
+	}
 	
-//	@PostMapping(value="/index")
-//	public String bookstore(@RequestParam(value="name")String name, Model model) {
-//		
-//		model.addAttribute("name", name);
-//		
-//		return "index";
-//	}
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public String save(Book book) {
+		repository.save(book);
+		return "redirect:index";
+	}
+	
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
+		repository.deleteById(bookId);
+		return "redirect:../index";
+	}
+	
+	@RequestMapping(value="/edit/{id}")
+	public String editBook(@PathVariable("id") Long bookId, Model model) {
+		model.addAttribute("book", repository.findById(bookId));
+		model.addAttribute("departments", repository.findAll());
+		return "editBook";
+	}
+	
 }
