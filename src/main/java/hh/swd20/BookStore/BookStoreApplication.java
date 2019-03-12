@@ -9,6 +9,8 @@ import hh.swd20.BookStore.model.Book;
 import hh.swd20.BookStore.model.BookRepository;
 import hh.swd20.BookStore.model.Category;
 import hh.swd20.BookStore.model.CategoryRepository;
+import hh.swd20.BookStore.model.User;
+import hh.swd20.BookStore.model.UserRepository;
 
 @SpringBootApplication
 public class BookStoreApplication {
@@ -18,7 +20,7 @@ public class BookStoreApplication {
 	}
 
 	@Bean
-	public CommandLineRunner bookDemo(BookRepository brepository, CategoryRepository crepository) {
+	public CommandLineRunner bookDemo(BookRepository brepository, CategoryRepository crepository, UserRepository urepository) {
 		return (args) -> {
 //			log.info("save a couple of students");
 			crepository.save(new Category("Fantasy"));
@@ -26,9 +28,16 @@ public class BookStoreApplication {
 			crepository.save(new Category("Other"));
 			
 			brepository.save(new Book("GRR Martin", "Feast for Crows", 1991, 123, 15, crepository.findByName("Fantasy").get(0)));
-			brepository.save(new Book("God", "The Holy Bible", 0, 777, 7, crepository.findByName("Scifi").get(0)));	
+			brepository.save(new Book("God", "The Holy Bible", 0, 777, 7, crepository.findByName("Scifi").get(0)));
 			
-//			log.info("fetch all students");
+			// user's password: user
+			// admin's password: admin
+			User user1 = new User("user", "$2a$10$tLy5ngwYvnltoar6SDFExubXzzeawxuY4rr7N/BOREveJf45x08GW", "user@gmail.com", "USER");
+			User user2 = new User("admin", "$2a$10$1Wx77JGem8GZNZ8g3uxybePFIj.aLMS2Hyxf3o2efFWDHAs3A7CZW", "admin@gmail.com", "ADMIN");
+			urepository.save(user1);
+			urepository.save(user2);
+			
+//			log.info("fetch all books");
 			for (Book book : brepository.findAll()) {
 //				log.info(student.toString());
 			}
