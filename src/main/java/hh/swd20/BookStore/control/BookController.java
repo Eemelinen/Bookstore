@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,11 @@ public class BookController {
 		model.addAttribute("books", repository.findAll());
 		return "index";
 	}
+	
+    @RequestMapping(value="/login")
+    public String login() {	
+        return "login";
+    }	
 	
 	// == Restful service to show all books in json.
     @RequestMapping(value="/showBooksJson", method = RequestMethod.GET)
@@ -53,6 +59,7 @@ public class BookController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('Admin')")
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 		repository.deleteById(bookId);
 		return "redirect:../index";
