@@ -17,7 +17,7 @@ public class Category {
 	private Long categoryid;
 	private String name;
 	
-	// == Department OneToManyStudent ==
+	// == Department OneToManyBook ==
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 	private List<Book> books;
 	

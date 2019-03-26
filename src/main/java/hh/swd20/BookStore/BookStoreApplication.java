@@ -22,13 +22,12 @@ public class BookStoreApplication {
 	@Bean
 	public CommandLineRunner bookDemo(BookRepository brepository, CategoryRepository crepository, UserRepository urepository) {
 		return (args) -> {
-//			log.info("save a couple of students");
 			crepository.save(new Category("Fantasy"));
 			crepository.save(new Category("Scifi"));
 			crepository.save(new Category("Other"));
 			
-			brepository.save(new Book("GRR Martin", "Feast for Crows", 1991, 123, 15, crepository.findByName("Fantasy").get(0)));
-			brepository.save(new Book("God", "The Holy Bible", 0, 777, 7, crepository.findByName("Scifi").get(0)));
+			brepository.save(new Book("Feast for Crows", "G.R.R Martin", 1991, 123, 15, crepository.findByName("Fantasy").get(0)));
+			brepository.save(new Book("The Other Book", "James Hopkins", 0, 777, 7, crepository.findByName("Scifi").get(0)));
 			
 			// user's password: user
 			// admin's password: admin
@@ -37,11 +36,6 @@ public class BookStoreApplication {
 			urepository.save(user1);
 			urepository.save(user2);
 			
-//			log.info("fetch all books");
-			for (Book book : brepository.findAll()) {
-//				log.info(student.toString());
-			}
-
 		};
 	}
 }
